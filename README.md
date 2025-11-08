@@ -16,7 +16,7 @@ A Chrome extension that automatically tracks job applications from Gmail confirm
 
 ### For Users (Installing from Chrome Web Store)
 
-1. Visit the [Chrome Web Store listing](#) (link coming soon)
+1. Visit the [Chrome Web Store listing](https://chromewebstore.google.com/detail/gmail-job-application-tra/lkpjngmdfncejiomkofogfdoppgifmkh)
 2. Click **"Add to Chrome"**
 3. Follow the prompts to install
 4. No OAuth setup needed - it works automatically!
