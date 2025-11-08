@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail Job Application Tracker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Job Application Tracker</h1>
+    </header>
+
+    <!-- Gmail Connection Section -->
+    <section class="gmail-connection-section" id="gmail-connection-section">
+      <h2>Gmail Connection</h2>
+      <div id="connected-account" class="connected-account" style="display: none;">
+        <p>
+          <strong>Connected:</strong>
+          <span id="user-email" class="user-email"></span>
+          <span class="connected-icon">✓</span>
+        </p>
+        <button id="disconnect-btn" class="btn btn-small btn-danger">Disconnect</button>
+        <p class="help-text" style="margin-top: 8px; font-size: 11px;">
+          To switch accounts, use a different Chrome profile or disconnect and sign in to Chrome with another Google account.
+        </p>
+      </div>
+      <div id="not-connected" class="not-connected" style="display: none;">
+        <p class="warning-text">Gmail not connected</p>
+        <button id="authenticate-gmail-btn" class="btn btn-primary">Connect Gmail Account</button>
+        <p class="help-text" style="margin-top: 10px;">
+          <strong>💡 Tip:</strong> To use different Gmail accounts, create separate Chrome profiles.
+          The extension connects to your Chrome profile's primary Google account.
+        </p>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="settings-section">
+      <h2>AI Provider Configuration</h2>
+
+      <div class="form-group">
+        <label for="ai-provider-select">Active AI Provider:</label>
+        <select id="ai-provider-select" class="input-field">
+          <option value="openai">OpenAI (gpt-4o-mini)</option>
+          <option value="deepseek">DeepSeek (deepseek-chat)</option>
+          <option value="gemini">Google Gemini (gemini-pro)</option>
+          <option value="claude">Anthropic Claude (claude-3-5-haiku)</option>
+        </select>
+      </div>
+
+      <div class="api-keys-container">
+        <div class="form-group api-key-field" data-provider="openai">
+          <label for="openai-key">OpenAI API Key:</label>
+          <input type="password" id="openai-key" class="input-field" placeholder="sk-...">
+        </div>
+
+        <div class="form-group api-key-field" data-provider="deepseek">
+          <label for="deepseek-key">DeepSeek API Key:</label>
+          <input type="password" id="deepseek-key" class="input-field" placeholder="sk-...">
+        </div>
+
+        <div class="form-group api-key-field" data-provider="gemini">
+          <label for="gemini-key">Gemini API Key:</label>
+          <input type="password" id="gemini-key" class="input-field" placeholder="AIza...">
+        </div>
+
+        <div class="form-group api-key-field" data-provider="claude">
+          <label for="claude-key">Claude API Key:</label>
+          <input type="password" id="claude-key" class="input-field" placeholder="sk-ant-...">
+        </div>
+      </div>
+
+      <h2>Scan Settings</h2>
+
+      <div class="form-group">
+        <label for="time-period">Time Period:</label>
+        <select id="time-period" class="input-field">
+          <option value="7">Last 7 days</option>
+          <option value="14" selected>Last 14 days</option>
+          <option value="30">Last 30 days</option>
+          <option value="60">Last 60 days</option>
+          <option value="90">Last 90 days</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="email-limit">Email Scan Limit:</label>
+        <input type="number" id="email-limit" class="input-field" value="50" min="1" max="500">
+      </div>
+
+      <h2>Scanned Email Tracking</h2>
+      <div class="scanned-stats" id="scanned-stats">
+        <p>Total emails scanned: <strong id="total-scanned">Loading...</strong></p>
+        <p class="help-text">These emails won't be scanned again, saving AI tokens and API calls.</p>
+        <button id="clear-scanned-btn" class="btn btn-danger">Clear All Scanned History</button>
+      </div>
+    </section>
+
+    <!-- Action Section -->
+    <section class="action-section">
+      <button id="process-emails-btn" class="btn btn-primary">Process Emails</button>
+    </section>
+
+    <!-- Status Section -->
+    <section class="status-section" id="status-section" style="display: none;">
+      <h2>Processing Status</h2>
+      <div class="spinner" id="spinner" style="display: none;"></div>
+      <div id="status-message" class="status-message"></div>
+      <button id="stop-processing-btn" class="btn btn-danger" style="display: none;">Stop Processing</button>
+
+      <div id="results-summary" class="results-summary" style="display: none;">
+        <h3>Results</h3>
+        <ul>
+          <li>Emails scanned: <span id="emails-scanned">0</span></li>
+          <li>Confirmations found: <span id="confirmations-found">0</span></li>
+          <li>New records added: <span id="new-records">0</span></li>
+          <li>Duplicates skipped: <span id="duplicates-skipped">0</span></li>
+          <li>Errors: <span id="errors-count">0</span></li>
+        </ul>
+        <div class="csv-info">
+          <p><strong>CSV Storage:</strong> File is saved to your Downloads folder as <code>job_applications.csv</code> and updated each time you download.</p>
+          <button id="open-csv-btn" class="btn btn-secondary">Download/Update CSV File</button>
+        </div>
+      </div>
+
+      <!-- Email Details Section -->
+      <div id="email-details-section" class="email-details-section" style="display: none;">
+        <h3>Email Processing Details</h3>
+        <div id="email-details-container"></div>
+      </div>
+    </section>
+
+    <!-- Error Section -->
+    <section class="error-section" id="error-section" style="display: none;">
+      <div class="error-message" id="error-message"></div>
+    </section>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

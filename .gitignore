@@ -1,0 +1,21 @@
+# API Keys (never commit these!)
+*.env
+.env
+secrets.json
+
+# Development files
+node_modules/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.zip
+dist/
+build/
+
+# Logs
+*.log

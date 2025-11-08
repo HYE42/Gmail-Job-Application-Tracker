@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Icon Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Extension Icon Generator</h1>
+  <p>Right-click each canvas and save as PNG with the filename shown below it.</p>
+
+  <div>
+    <canvas id="icon16" width="16" height="16"></canvas>
+    <p>Save as: icon16.png</p>
+  </div>
+
+  <div>
+    <canvas id="icon48" width="48" height="48"></canvas>
+    <p>Save as: icon48.png</p>
+  </div>
+
+  <div>
+    <canvas id="icon128" width="128" height="128"></canvas>
+    <p>Save as: icon128.png</p>
+  </div>
+
+  <script>
+    function drawIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Background gradient (blue theme)
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#4285f4');
+      gradient.addColorStop(1, '#2451a3');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // Draw envelope icon (representing email/application)
+      ctx.strokeStyle = '#ffffff';
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = Math.max(1, size / 32);
+
+      // Envelope body
+      const margin = size * 0.2;
+      const envWidth = size * 0.6;
+      const envHeight = size * 0.4;
+      const envX = margin;
+      const envY = margin + size * 0.1;
+
+      // White rectangle for envelope
+      ctx.fillRect(envX, envY, envWidth, envHeight);
+
+      // Envelope flap (triangle)
+      ctx.beginPath();
+      ctx.moveTo(envX, envY);
+      ctx.lineTo(envX + envWidth / 2, envY + envHeight / 2);
+      ctx.lineTo(envX + envWidth, envY);
+      ctx.closePath();
+      ctx.fillStyle = '#4285f4';
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.stroke();
+
+      // Checkmark (indicating confirmed/tracked)
+      ctx.strokeStyle = '#0f9d58';
+      ctx.lineWidth = Math.max(2, size / 16);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      const checkSize = size * 0.25;
+      const checkX = envX + envWidth - checkSize * 0.3;
+      const checkY = envY + envHeight + checkSize * 0.5;
+
+      ctx.beginPath();
+      ctx.moveTo(checkX - checkSize * 0.3, checkY);
+      ctx.lineTo(checkX, checkY + checkSize * 0.3);
+      ctx.lineTo(checkX + checkSize * 0.5, checkY - checkSize * 0.4);
+      ctx.stroke();
+    }
+
+    // Generate all three icon sizes
+    drawIcon('icon16', 16);
+    drawIcon('icon48', 48);
+    drawIcon('icon128', 128);
+
+    // Add download functionality
+    document.querySelectorAll('canvas').forEach(canvas => {
+      canvas.addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = canvas.id + '.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    });
+  </script>
+</body>
+</html>
